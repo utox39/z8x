@@ -110,7 +110,7 @@ pub fn main() !void {
     }
 
     if (args.len != 2) {
-        defer allocator.free(string);
+        allocator.free(string);
     }
 
     try stdout.print("The string is {s}.\n", .{if (check) "valid" else "not valid"});
