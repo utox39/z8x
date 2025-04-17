@@ -16,6 +16,49 @@ fn concatArgs(allocator: std.mem.Allocator, args: [][:0]u8) ![]u8 {
     return allocator.dupe(u8, string.items);
 }
 
+fn isUnicodeBlockTags(cp: u21) bool {
+    return cp >= 0xE0000 and cp <= 0xE007F;
+}
+
+test "is a unicode block tag" {
+    const result = isUnicodeBlockTags(0xE0001);
+    try std.testing.expectEqual(result, true);
+}
+
+test "is not a unicode block tag" {
+    const result = isUnicodeBlockTags('f');
+    try std.testing.expectEqual(result, false);
+}
+
+fn findUnicodeBlockTags(allocator: std.mem.Allocator, str: []const u8) ![]u8 {
+    var results = std.ArrayList(u8).init(allocator);
+    defer results.deinit();
+
+    var it = std.unicode.Utf8Iterator{ .bytes = str, .i = 0 };
+
+    while (it.nextCodepoint()) |cp| {
+        if (isUnicodeBlockTags(cp)) {
+            try std.fmt.format(results.writer(), "\tUnicode Block Tag: U+{X:0>4}\n", .{cp});
+        }
+    }
+
+    return results.toOwnedSlice();
+}
+
+test "contains unicode block tags" {
+    const results = try findUnicodeBlockTags(std.testing.allocator, "\u{E0001}\u{E0066}\u{E007F}");
+    defer std.testing.allocator.free(results);
+
+    try std.testing.expect(results.len > 0);
+}
+
+test "does not contain unicode block tags" {
+    const results = try findUnicodeBlockTags(std.testing.allocator, "test");
+    defer std.testing.allocator.free(results);
+
+    try std.testing.expect(results.len == 0);
+}
+
 fn checkString(s: []const u8) bool {
     return std.unicode.utf8ValidateSlice(s);
 }
@@ -59,6 +102,12 @@ pub fn main() !void {
     }
 
     check = checkString(string);
+    const block_tags = try findUnicodeBlockTags(allocator, string);
+    if (block_tags.len > 0) {
+        try stdout.print("WARNING: Tags (Unicode block) found:\n{s}", .{block_tags});
+        try bw.flush();
+        allocator.free(block_tags);
+    }
 
     if (args.len != 2) {
         defer allocator.free(string);
