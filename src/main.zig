@@ -13,7 +13,7 @@ fn concatArgs(allocator: std.mem.Allocator, args: [][:0]u8) ![]u8 {
         try string.appendSlice(a);
     }
 
-    return allocator.dupe(u8, string.items);
+    return string.toOwnedSlice();
 }
 
 fn isUnicodeBlockTags(cp: u21) bool {
