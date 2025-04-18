@@ -1,8 +1,8 @@
-# utf8validator
+# z8x
 
 ## Description
 
-utf8validator checks if a given input string is valid UTF-8 and finds [Tags (Unicode block)](https://en.wikipedia.org/wiki/Tags_(Unicode_block))
+z8x checks if a given input string is valid UTF-8 and finds [Tags (Unicode block)](https://en.wikipedia.org/wiki/Tags_(Unicode_block))
 to prevent [ASCII Smuggling](https://embracethered.com/blog/posts/2024/hiding-and-finding-text-with-unicode-tags/).
 
 ## Requirements
@@ -13,16 +13,16 @@ to prevent [ASCII Smuggling](https://embracethered.com/blog/posts/2024/hiding-an
 
 ```console
 # Clone the repo
-$ git clone https://github.com/utox39/utf8validator.git
+$ git clone https://github.com/utox39/z8x.git
 
 # cd to the path
-$ cd path/to/utf8validator
+$ cd path/to/z8x
 
 # Build zigfetch
 $ zig build -Doptimize=ReleaseSafe
 
 # Then move it somewhere in your $PATH. Here is an example:
-$ mv ./zig-out/utf8validator ~/bin
+$ mv ./zig-out/z8x ~/bin
 ```
 
 ## Usage
@@ -30,14 +30,14 @@ $ mv ./zig-out/utf8validator ~/bin
 ### Command-line args
 
 ```console
-$ utf8validator "some text"
+$ z8x "some text"
 
 ```
 
 ### Stdin
 
 ```console
-$ echo "some text" | utf8validator
+$ echo "some text" | z8x
 
 ```
 
