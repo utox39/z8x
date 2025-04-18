@@ -2,7 +2,8 @@
 
 ## Description
 
-utf8validator checks whether a given input string is valid UTF-8
+utf8validator checks if a given input string is valid UTF-8 and finds [Tags (Unicode block)](https://en.wikipedia.org/wiki/Tags_(Unicode_block))
+to prevent [ASCII Smuggling](https://embracethered.com/blog/posts/2024/hiding-and-finding-text-with-unicode-tags/).
 
 ## Requirements
 
