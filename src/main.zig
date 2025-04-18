@@ -59,8 +59,8 @@ test "does not contain unicode block tags" {
     try std.testing.expect(results.len == 0);
 }
 
-fn checkString(s: []const u8) bool {
-    return std.unicode.utf8ValidateSlice(s);
+fn checkString(str: []const u8) bool {
+    return std.unicode.utf8ValidateSlice(str);
 }
 
 test "valid utf-8 string" {
